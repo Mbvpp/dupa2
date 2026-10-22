@@ -1,296 +1,353 @@
-
-
+```html
 <!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Legitymacja Studencka — mObywatel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <meta name="theme-color" content="#080a0f">
+  <title>Karta studencka — DEMO</title>
+
+  <link rel="manifest" href="./manifest.json">
+
   <style>
     :root {
-      --ink: #111827;
-      --muted: #6b7280;
-      --blue: #1d4ed8;
-      --bg-page: #eef2f6;
-      --card-radius: 22px;
+      color-scheme: dark;
+      --bg: #080a0f;
+      --surface: #12151d;
+      --surface2: #1b202b;
+      --text: #f5f7fb;
+      --muted: #929bab;
+      --accent: #76a9ff;
+      --border: #292f3c;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg-page);
-      color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
-    /* Ramka telefonu */
-    .phone-screen {
+    .app {
       width: 100%;
-      max-width: 410px;
-      background: #f8fafc;
-      min-height: 840px;
-      border-radius: 36px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-      padding: 16px 20px 28px;
-      overflow: hidden;
-      border: 1px solid #e2e8f0;
+      max-width: 440px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: max(16px, env(safe-area-inset-top)) 16px
+               max(24px, env(safe-area-inset-bottom));
+      background: var(--bg);
     }
 
-    /* Pasek stanu */
-    .status-bar {
+    .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 4px 8px 16px;
-      font-weight: 600;
-      font-size: 14px;
+      gap: 14px;
+      padding: 12px 2px 22px;
     }
 
-    /* Nawigacja */
-    .nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  
-  /* Przyklejenie nagłówka do góry ekranu */
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  
-  /* Tło i marginesy, aby treść pod spodem nie prześwitywała */
-  background: #f8fafc; /* Pasuje do tła telefonu */
-  padding: 10px 0;
-  margin-bottom: 8px;
-}
-
-    .back-btn {
-      font-size: 20px;
-      color: #3b82f6;
+    .back {
+      color: var(--accent);
+      font-size: 25px;
       text-decoration: none;
-      font-weight: bold;
     }
 
-    h1 {
-      margin: 0;
+    .heading {
+      flex: 1;
       font-size: 19px;
       font-weight: 700;
     }
 
-    .timestamp {
-      text-align: center;
+    .demo-label {
+      color: #ffd479;
+      background: #352b17;
+      border: 1px solid #655027;
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .clock {
       color: var(--muted);
+      text-align: center;
       font-size: 12px;
-      margin: 0 0 16px;
+      margin: 0 0 18px;
     }
 
-    /* Obrazki karty (zdj_1_a.png, zdj_2.png, zdj_3.png) */
-    .media-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .section {
+      margin-bottom: 18px;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      box-shadow: 0 8px 24px #00000020;
     }
 
-    .media-card {
-      width: 100%;
-      border-radius: var(--card-radius);
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .student-card {
+      position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-      background: #fff;
+      border-radius: 15px;
+      background: #202634;
     }
 
-    .media-card img {
+    .student-card img {
+      display: block;
       width: 100%;
       height: auto;
-      display: block;
+      max-height: 420px;
+      object-fit: contain;
     }
 
-    /* Sekcja akcji pod kartą */
-    .quick-actions {
+    .watermark {
+      position: absolute;
+      inset: 0;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 16px;
-      text-align: center;
+      place-items: center;
+      pointer-events: none;
+      background: #080a0f18;
     }
 
-    .action-btn {
+    .watermark span {
+      padding: 8px 18px;
+      border: 2px solid #ffffffb0;
+      border-radius: 8px;
+      background: #080a0fbd;
+      color: white;
+      font-size: clamp(20px, 7vw, 32px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      transform: rotate(-15deg);
+    }
+
+    .notice {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: #202a3b;
+      color: #c5d9ff;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .image-panel {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
       background: #fff;
-      border-radius: 16px;
-      padding: 12px 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
+    }
+
+    .image-panel img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin: 18px 0;
+    }
+
+    .action {
+      padding: 13px 5px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
       font-size: 11px;
-      font-weight: 600;
-      color: #374151;
-      border: 1px solid #f1f5f9;
     }
 
     .action-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #eff6ff;
-      display: grid;
-      place-items: center;
-      color: #2563eb;
-      font-size: 18px;
+      display: block;
+      margin-bottom: 7px;
+      color: var(--accent);
+      font-size: 22px;
     }
 
-    /* Informacja na dole */
-    .info-box {
-      margin-top: 16px;
-      background: #eef2ff;
-      border-radius: 16px;
+    .details {
+      display: none;
+      margin-top: 12px;
       padding: 14px;
-      font-size: 12px;
-      line-height: 1.45;
-      color: #1e40af;
-      display: flex;
-      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface2);
+      color: #d3d8e2;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
-    .info-icon {
-      font-size: 18px;
-      flex-shrink: 0;
+    .details.open {
+      display: block;
     }
 
-    /* Przycisk rozwijany */
-    .learn-more-btn {
-      margin-top: 16px;
+    .toggle {
       width: 100%;
-      background: #fff;
-      border: 1px solid #cbd5e1;
-      padding: 12px;
+      padding: 13px;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      text-align: center;
-      font-weight: 600;
-      color: #334155;
+      background: var(--surface2);
+      color: var(--text);
+      font: inherit;
       cursor: pointer;
     }
 
-    .learning-panel {
-      display: none;
-      margin-top: 10px;
-      padding: 12px;
-      background: #fff;
-      border-radius: 12px;
-      font-size: 12px;
+    .footer {
+      padding: 15px 0 4px;
       color: var(--muted);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+      font-size: 11px;
+      text-align: center;
     }
 
-    .learning-panel.visible {
-      display: block;
+    @media (min-width: 600px) {
+      body {
+        padding: 24px 0;
+      }
+
+      .app {
+        min-height: 850px;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+      }
     }
-    /* Kontener dla legitymacji */
-
-
-.card-bg {
-  width: 100%;
-  display: block;
-}
-
-/* Upewnij się, że kontener karty ma pozycjonowanie względne */
-.card-wrapper {
-  position: relative !important;
-  display: block;
-  width: 100%;
-}
-
-/* Dokładne wymiary i pozycja GIF-a flagi */
-.flag-animated {
-  position: absolute !important;
-  top: 43.8% !important;     /* Precyzyjna wysokość (obok numeru PESEL) */
-  left: 7.8% !important;     /* Przesunięcie do lewej krawędzi */
-  width: 17.5% !important;   /* Bardzo mocne zmniejszenie rozmiaru */
-  height: auto !important;
-  border-radius: 2px;
-  pointer-events: none;
-  z-index: 10;
-}
   </style>
 </head>
+
 <body>
+  <main class="app">
+    <header class="topbar">
+      <a class="back" href="#" aria-label="Wróć"
+         onclick="history.back(); return false;">‹</a>
 
-  <main class="phone-screen">
-   
-
-    <!-- Nawigacja górna -->
-    <header class="nav">
-      <a href="#" class="back-btn">&larr;</a>
-      <h1>Legitymacja studencka</h1>
+      <div class="heading">Karta studencka</div>
+      <span class="demo-label">DEMO</span>
     </header>
 
-    <!-- Czas i data -->
-    <p class="timestamp">
-      Czas · <span id="clock-time">--:--:--</span> <span id="date-time">--.--.----</span>
+    <p class="clock">
+      Czas: <span id="clock">--:--:--</span>
+      · <span id="date">--.--.----</span>
     </p>
 
-    <!-- Główna zawartość / Obrazy legitymacji -->
-   <div class="media-card card-wrapper">
-  <!-- Zdjęcie legitymacji (bez flagi lub zasłonięte) -->
-  <img src="ptk.jpg" alt="Legitymacja Studencka" class="card-bg">
-  
-  <!-- Animowany GIF z flagą -->
-  <img src="flagapolski.gif" alt="Flaga Polski" class="flag-animated">
-</div>
+    <section class="section">
+      <h2 class="section-title">Karta demonstracyjna</h2>
 
-    
+      <div class="student-card">
+        <img src="./ptk.jpg"
+             alt="Przykładowa grafika karty"
+             onerror="this.style.display='none'">
 
-      <div class="media-card">
-        <img src="kodkreskowy.png" alt="Kod kreskowy i dane">
+        <div class="watermark">
+          <span>DEMO</span>
+        </div>
       </div>
 
-      <div class="media-card">
-        <img src="zdj_3.png" alt="Informacja o ulgach">
+      <div class="notice">
+        To jest projekt demonstracyjny. Nie stanowi dokumentu
+        tożsamości ani potwierdzenia uprawnień do ulg.
+      </div>
+    </section>
+
+    <div class="actions">
+      <div class="action">
+        <span class="action-icon">▤</span>
+        Podgląd
+      </div>
+      <div class="action">
+        <span class="action-icon">▦</span>
+        Grafiki
+      </div>
+      <div class="action">
+        <span class="action-icon">ⓘ</span>
+        Informacje
       </div>
     </div>
 
-  
-    <div class="learning-panel" id="learning-panel">
-      Dokument potwierdza uprawnienia do ulgowych przejazdów środkami publicznego transportu zbiorowego.
+    <section class="section">
+      <h2 class="section-title">Przykładowy kod</h2>
+      <div class="image-panel">
+        <img src="./kodkreskowy.png"
+             alt="Przykładowa grafika kodu"
+             onerror="this.style.display='none'">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Dodatkowe grafiki</h2>
+
+      <div class="image-panel" style="margin-bottom:12px">
+        <img src="./1.png"
+             alt="Grafika demonstracyjna 1"
+             onerror="this.style.display='none'">
+      </div>
+
+      <div class="image-panel">
+        <img src="./2.png"
+             alt="Grafika demonstracyjna 2"
+             onerror="this.style.display='none'">
+      </div>
+    </section>
+
+    <button class="toggle" id="details-button"
+            type="button" aria-expanded="false">
+      Informacje o wersji demonstracyjnej
+    </button>
+
+    <div class="details" id="details">
+      Jest to niezależna strona demonstracyjna.
+      Nie jest połączona z systemami uczelni ani usługą mObywatel.
+      Wyświetlane obrazy są jedynie lokalnymi plikami graficznymi.
     </div>
+
+    <footer class="footer">
+      Projekt demonstracyjny · DEMO
+    </footer>
   </main>
-<script>
-  function updateDateTime() {
-    const now = new Date();
-    
-    const statusTime = document.querySelector("#status-time");
-    const clockTime = document.querySelector("#clock-time");
-    const dateTime = document.querySelector("#date-time");
 
-    if (statusTime) {
-      statusTime.textContent = now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+  <script>
+    function updateClock() {
+      const now = new Date();
+
+      document.getElementById("clock").textContent =
+        now.toLocaleTimeString("pl-PL", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        });
+
+      document.getElementById("date").textContent =
+        now.toLocaleDateString("pl-PL");
     }
-    if (clockTime) {
-      clockTime.textContent = now.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    }
-    if (dateTime) {
-      dateTime.textContent = now.toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric" });
-    }
-  }
 
-  // Uruchomienie od razu i odświeżanie co sekundę
-  updateDateTime();
-  setInterval(updateDateTime, 1000);
+    updateClock();
+    setInterval(updateClock, 1000);
 
-  // Bezpieczna obsługa przycisku (jeśli istnieje)
-  const button = document.querySelector("#learn-button");
-  const panel = document.querySelector("#learning-panel");
+    const button = document.getElementById("details-button");
+    const details = document.getElementById("details");
 
-  if (button && panel) {
     button.addEventListener("click", () => {
-      const isOpen = panel.classList.toggle("visible");
+      const isOpen = details.classList.toggle("open");
       button.setAttribute("aria-expanded", String(isOpen));
+
+      button.textContent = isOpen
+        ? "Ukryj informacje"
+        : "Informacje o wersji demonstracyjnej";
     });
-  }
-</script>
+  </script>
+</body>
+</html>
+```
