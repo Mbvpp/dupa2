@@ -1,10 +1,16 @@
+
 {
   "id": "./",
-  "name": "Karta studencka DEMO",
-  "short_name": "Demo",
+  "name": "Legitymacja DEMO",
+  "short_name": "DEMO",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": [
+    "fullscreen",
+    "standalone"
+  ],
   "background_color": "#080a0f",
   "theme_color": "#080a0f"
 }
+```
