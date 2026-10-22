@@ -2,27 +2,14 @@
 <!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0f">
-  <title>Karta studencka — DEMO</title>
+  <title>Karta studencka DEMO</title>
 
   <link rel="manifest" href="./manifest.json">
 
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #080a0f;
-      --surface: #12151d;
-      --surface2: #1b202b;
-      --text: #f5f7fb;
-      --muted: #929bab;
-      --accent: #76a9ff;
-      --border: #292f3c;
-    }
-
     * {
       box-sizing: border-box;
     }
@@ -30,322 +17,277 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #080a0f;
+      color: #f3f4f6;
+      font-family: Arial, sans-serif;
     }
 
-    .app {
+    .phone-screen {
       width: 100%;
-      max-width: 440px;
+      max-width: 410px;
       min-height: 100vh;
-      margin: 0 auto;
-      padding: max(16px, env(safe-area-inset-top)) 16px
-               max(24px, env(safe-area-inset-bottom));
-      background: var(--bg);
+      margin: auto;
+      padding: 18px 16px 30px;
+      background: #0d1017;
     }
 
-    .topbar {
+    .nav {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 12px 2px 22px;
+      gap: 12px;
+      padding: 12px 0 20px;
+      border-bottom: 1px solid #252b36;
     }
 
-    .back {
-      color: var(--accent);
+    .back-btn {
+      color: #60a5fa;
       font-size: 25px;
       text-decoration: none;
     }
 
-    .heading {
-      flex: 1;
+    h1 {
+      margin: 0;
       font-size: 19px;
-      font-weight: 700;
     }
 
-    .demo-label {
-      color: #ffd479;
-      background: #352b17;
-      border: 1px solid #655027;
-      border-radius: 8px;
-      padding: 5px 8px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .clock {
-      color: var(--muted);
+    .timestamp {
+      margin: 16px 0;
       text-align: center;
+      color: #9ca3af;
       font-size: 12px;
-      margin: 0 0 18px;
     }
 
-    .section {
-      margin-bottom: 18px;
-      padding: 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 19px;
-      box-shadow: 0 8px 24px #00000020;
-    }
-
-    .section-title {
-      margin: 0 0 12px;
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .student-card {
-      position: relative;
+    .demo-card {
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #151a24;
+      border: 1px solid #303746;
+      border-radius: 18px;
       overflow: hidden;
-      border-radius: 15px;
-      background: #202634;
     }
 
-    .student-card img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: 420px;
-      object-fit: contain;
+    .card-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: bold;
     }
 
-    .watermark {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      pointer-events: none;
-      background: #080a0f18;
+    .demo-badge {
+      color: #ffd580;
+      background: #3b2e17;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 10px;
     }
 
-    .watermark span {
-      padding: 8px 18px;
-      border: 2px solid #ffffffb0;
-      border-radius: 8px;
-      background: #080a0fbd;
-      color: white;
-      font-size: clamp(20px, 7vw, 32px);
-      font-weight: 900;
-      letter-spacing: 4px;
-      transform: rotate(-15deg);
+    .student-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
     }
 
-    .notice {
-      margin-top: 12px;
-      padding: 11px 12px;
-      border-radius: 12px;
-      background: #202a3b;
-      color: #c5d9ff;
-      font-size: 12px;
+    .photo {
+      width: 100px;
+      height: 125px;
+      flex-shrink: 0;
+      object-fit: cover;
+      border-radius: 10px;
+      background: #252b36;
+    }
+
+    .field-label {
+      margin: 0 0 4px;
+      color: #9ca3af;
+      font-size: 10px;
+    }
+
+    .field-value {
+      margin: 0 0 12px;
+      font-size: 13px;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .demo-note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #303746;
+      color: #a8c7ff;
+      font-size: 11px;
       line-height: 1.5;
     }
 
-    .image-panel {
-      width: 100%;
+    .media-card {
+      margin-bottom: 14px;
       overflow: hidden;
-      border-radius: 12px;
-      background: #fff;
+      border: 1px solid #303746;
+      border-radius: 16px;
+      background: #151a24;
     }
 
-    .image-panel img {
+    .media-card img {
       display: block;
       width: 100%;
       height: auto;
     }
 
-    .actions {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 9px;
-      margin: 18px 0;
+    .card-wrapper {
+      position: relative;
     }
 
-    .action {
-      padding: 13px 5px;
-      text-align: center;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--surface);
-      color: var(--text);
-      font-size: 11px;
-    }
-
-    .action-icon {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--accent);
-      font-size: 22px;
-    }
-
-    .details {
-      display: none;
-      margin-top: 12px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--surface2);
-      color: #d3d8e2;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .details.open {
-      display: block;
+    .flag-animated {
+      position: absolute;
+      top: 43.8%;
+      left: 7.8%;
+      width: 17.5%;
+      height: auto;
+      pointer-events: none;
     }
 
     .toggle {
       width: 100%;
       padding: 13px;
-      border: 1px solid var(--border);
+      border: 1px solid #303746;
       border-radius: 12px;
-      background: var(--surface2);
-      color: var(--text);
-      font: inherit;
+      background: #151a24;
+      color: #f3f4f6;
+      font-size: 14px;
       cursor: pointer;
     }
 
-    .footer {
-      padding: 15px 0 4px;
-      color: var(--muted);
-      font-size: 11px;
-      text-align: center;
+    .learning-panel {
+      display: none;
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #151a24;
+      color: #d1d5db;
+      font-size: 12px;
+      line-height: 1.6;
     }
 
-    @media (min-width: 600px) {
-      body {
-        padding: 24px 0;
-      }
+    .learning-panel.visible {
+      display: block;
+    }
 
-      .app {
-        min-height: 850px;
-        border: 1px solid var(--border);
-        border-radius: 28px;
-      }
+    footer {
+      margin-top: 20px;
+      color: #9ca3af;
+      text-align: center;
+      font-size: 11px;
     }
   </style>
 </head>
 
 <body>
-  <main class="app">
-    <header class="topbar">
-      <a class="back" href="#" aria-label="Wróć"
-         onclick="history.back(); return false;">‹</a>
+  <main class="phone-screen">
 
-      <div class="heading">Karta studencka</div>
-      <span class="demo-label">DEMO</span>
+    <header class="nav">
+      <a href="#" class="back-btn"
+         onclick="history.back(); return false;">‹</a>
+      <h1>Karta studencka</h1>
     </header>
 
-    <p class="clock">
-      Czas: <span id="clock">--:--:--</span>
-      · <span id="date">--.--.----</span>
+    <p class="timestamp">
+      Czas · <span id="clock-time">--:--:--</span>
+      <span id="date-time">--.--.----</span>
     </p>
 
-    <section class="section">
-      <h2 class="section-title">Karta demonstracyjna</h2>
+    <section class="demo-card">
+      <div class="card-heading">
+        <span>DANE KARTY</span>
+        <span class="demo-badge">DEMO</span>
+      </div>
 
-      <div class="student-card">
-        <img src="./ptk.jpg"
-             alt="Przykładowa grafika karty"
-             onerror="this.style.display='none'">
+      <div class="student-info">
+        <img class="photo"
+             src="./TWOJE_ZDJECIE.png"
+             alt="Zdjęcie użytkownika">
 
-        <div class="watermark">
-          <span>DEMO</span>
+        <div>
+          <p class="field-label">IMIĘ I NAZWISKO</p>
+          <p class="field-value">WPISZ IMIĘ I NAZWISKO</p>
+
+          <p class="field-label">UCZELNIA</p>
+          <p class="field-value">WPISZ UCZELNIĘ</p>
+
+          <p class="field-label">KIERUNEK</p>
+          <p class="field-value">WPISZ KIERUNEK</p>
+
+          <p class="field-label">NUMER ALBUMU</p>
+          <p class="field-value">WPISZ NUMER</p>
         </div>
       </div>
 
-      <div class="notice">
-        To jest projekt demonstracyjny. Nie stanowi dokumentu
-        tożsamości ani potwierdzenia uprawnień do ulg.
+      <div class="demo-note">
+        Ważność: WPISZ DATĘ<br>
+        Demonstracyjna karta studencka — nie jest oficjalnym dokumentem.
       </div>
     </section>
 
-    <div class="actions">
-      <div class="action">
-        <span class="action-icon">▤</span>
-        Podgląd
-      </div>
-      <div class="action">
-        <span class="action-icon">▦</span>
-        Grafiki
-      </div>
-      <div class="action">
-        <span class="action-icon">ⓘ</span>
-        Informacje
-      </div>
+    <div class="media-card card-wrapper">
+      <img src="./ptk.jpg"
+           alt="Grafika demonstracyjna karty">
+
+      <img src="./flagapolski.gif"
+           class="flag-animated"
+           alt="Flaga Polski">
     </div>
 
-    <section class="section">
-      <h2 class="section-title">Przykładowy kod</h2>
-      <div class="image-panel">
-        <img src="./kodkreskowy.png"
-             alt="Przykładowa grafika kodu"
-             onerror="this.style.display='none'">
-      </div>
-    </section>
+    <div class="media-card">
+      <img src="./kodkreskowy.png"
+           alt="Grafika kodu kreskowego">
+    </div>
 
-    <section class="section">
-      <h2 class="section-title">Dodatkowe grafiki</h2>
+    <div class="media-card">
+      <img src="./1.png" alt="Grafika dodatkowa 1">
+    </div>
 
-      <div class="image-panel" style="margin-bottom:12px">
-        <img src="./1.png"
-             alt="Grafika demonstracyjna 1"
-             onerror="this.style.display='none'">
-      </div>
+    <div class="media-card">
+      <img src="./2.png" alt="Grafika dodatkowa 2">
+    </div>
 
-      <div class="image-panel">
-        <img src="./2.png"
-             alt="Grafika demonstracyjna 2"
-             onerror="this.style.display='none'">
-      </div>
-    </section>
-
-    <button class="toggle" id="details-button"
+    <button id="learn-button" class="toggle"
             type="button" aria-expanded="false">
-      Informacje o wersji demonstracyjnej
+      Informacje dodatkowe
     </button>
 
-    <div class="details" id="details">
-      Jest to niezależna strona demonstracyjna.
-      Nie jest połączona z systemami uczelni ani usługą mObywatel.
-      Wyświetlane obrazy są jedynie lokalnymi plikami graficznymi.
+    <div class="learning-panel" id="learning-panel">
+      To jest strona demonstracyjna. Nie jest połączona z systemami
+      uczelni ani usługą mObywatel.
     </div>
 
-    <footer class="footer">
-      Projekt demonstracyjny · DEMO
-    </footer>
+    <footer>Wersja demonstracyjna · DEMO</footer>
+
   </main>
 
   <script>
-    function updateClock() {
+    function updateDateTime() {
       const now = new Date();
 
-      document.getElementById("clock").textContent =
-        now.toLocaleTimeString("pl-PL", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit"
-        });
+      document.getElementById("clock-time").textContent =
+        now.toLocaleTimeString("pl-PL");
 
-      document.getElementById("date").textContent =
+      document.getElementById("date-time").textContent =
         now.toLocaleDateString("pl-PL");
     }
 
-    updateClock();
-    setInterval(updateClock, 1000);
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 
-    const button = document.getElementById("details-button");
-    const details = document.getElementById("details");
+    const button = document.getElementById("learn-button");
+    const panel = document.getElementById("learning-panel");
 
     button.addEventListener("click", () => {
-      const isOpen = details.classList.toggle("open");
-      button.setAttribute("aria-expanded", String(isOpen));
-
-      button.textContent = isOpen
+      const open = panel.classList.toggle("visible");
+      button.setAttribute("aria-expanded", String(open));
+      button.textContent = open
         ? "Ukryj informacje"
-        : "Informacje o wersji demonstracyjnej";
+        : "Informacje dodatkowe";
     });
   </script>
 </body>
